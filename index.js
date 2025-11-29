@@ -1,3 +1,9 @@
+let contenedor;
+let buscador;
+let contadorPaginas = 2;
+let ultimaBusqueda;
+let tipoBusqueda;
+
 function maquetarPeliculas(contenedor,listaPeliculas){
     for(const peli of listaPeliculas){
         miDiv = document.createElement("div");
@@ -44,16 +50,11 @@ function detallesPeticion(id){
         })
 }
 
-let contenedor;
-let buscador;
-let contadorPaginas = 2;
-let ultimaBusqueda;
-
 
 window.onscroll = () => {
     let final = (window.innerHeight + window.scrollY >= document.body.offsetHeight-250);
     if(final){
-        let url = "https://www.omdbapi.com/?s="+ultimaBusqueda+"&apikey=ea005db6&page="+contadorPaginas;
+        let url = "https://www.omdbapi.com/?s="+ultimaBusqueda+tipoBusqueda+"&apikey=ea005db6&page="+contadorPaginas;
         lanzarPeticion(url);
     }
 }
@@ -78,9 +79,7 @@ window.onload = () => {
     contenedor = document.getElementById("contenedor");
     buscador = document.getElementById("buscador");
     let buscar = document.getElementById("busca");
-    let cargar = document.getElementById("btnCargar");
-    contadorPaginas = 2;
-    ultimaBusqueda = "";
+    tipo = document.getElementById("tipo");
     //detallesPeticion("tt0076759")
 
     acceso.addEventListener("click",()=>{
@@ -89,11 +88,20 @@ window.onload = () => {
     })
 
     buscar.addEventListener("click",()=>{
-        contenedor.innerHTML = "";
-        ultimaBusqueda = buscador.value;
-        let url = "https://www.omdbapi.com/?s="+ultimaBusqueda+"&apikey=ea005db6&page=1";
-        lanzarPeticion(url);
-        buscador.value="";
+            contenedor.innerHTML = "";
+            ultimaBusqueda = buscador.value;
+
+            if(tipo.value=="cualquiera"){
+                tipoBusqueda = "";
+            }else if(tipo.value == "peliculas"){
+                tipoBusqueda = "&type=movie";
+            }else if(tipo.value == "series"){
+                tipoBusqueda = "&type=series";
+            }
+
+            let url = "https://www.omdbapi.com/?s="+ultimaBusqueda+tipoBusqueda+"&apikey=ea005db6&page=1";
+            lanzarPeticion(url);
+            buscador.value="";
         
     })
     
@@ -101,7 +109,14 @@ window.onload = () => {
         if(e.key == "Enter"){
             contenedor.innerHTML = "";
             ultimaBusqueda = buscador.value;
-            let url = "https://www.omdbapi.com/?s="+ultimaBusqueda+"&apikey=ea005db6&page=1";
+            if(tipo.value=="cualquiera"){
+                tipoBusqueda = "";
+            }else if(tipo.value == "peliculas"){
+                tipoBusqueda = "&type=movie";
+            }else if(tipo.value == "series"){
+                tipoBusqueda = "&type=series";
+            }
+            let url = "https://www.omdbapi.com/?s="+ultimaBusqueda+tipoBusqueda+"&apikey=ea005db6&page=1";
             lanzarPeticion(url);
             buscador.value= "";
         }
