@@ -1,0 +1,93 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    background-image: url(https://cdn.magicdecor.in/com/2023/02/29184224/image-1689504354-3016.jpg);
+    width: 100%;
+    color: aqua;
+ }
+
+        
+
+h2{
+     color: aqua;
+}
+
+button,input,select{
+    background-color: purple;
+    color: aqua;
+}
+
+#btnCargar{
+    opacity: 0;
+}
+
+#box{
+    visibility: hidden;
+    align-self: center;
+    justify-content: center;
+    align-items: center;
+}
+
+#landing{
+    background-image: url(https://cdn.magicdecor.in/com/2023/02/29184224/image-1689504354-3016.jpg);
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+
+}
+
+#contenedor{
+    display: grid;
+    grid-template-columns: 80vh 80vh 80vh; 
+}
+
+#fondo{
+    z-index: -1;
+    width: 100%;
+    position: fixed;
+    height: 100%;
+}
+
+img{
+    width: 200px;
+    height: 200px;
+}
+
+#detalles {
+    display: none; 
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0,0,0,0.7);
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#contenidoDetalles {
+    background-image: url(https://cdn.magicdecor.in/com/2023/02/29184224/image-1689504354-3016.jpg);
+    padding: 100px;
+    width: 60vw;
+    color: aqua;
+    max-width: 800px;
+    border-radius: 10px;
+    text-align: center;
+    position: relative;
+}
+
+#cerrar {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    cursor: pointer;
+    font-size: 25px;
+}

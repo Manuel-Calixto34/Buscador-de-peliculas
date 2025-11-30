@@ -9,7 +9,7 @@ function maquetarPeliculas(contenedor,listaPeliculas){
         miDiv = document.createElement("div");
         miDiv.addEventListener("click",()=>detallesPeticion(peli.imdbID));
         poster = document.createElement("img");
-        poster.onerror = (e) => e.target.src = "./error.png";
+        poster.onerror = (e) => e.target.src = "./src/img/error.png";
         texto = document.createElement("h2");
         poster.src = peli.Poster;
         texto.innerHTML = peli.Title;
@@ -23,30 +23,47 @@ function detallesPeticion(id){
     fetch("https://www.omdbapi.com/?i="+id+"&apikey=ea005db6").then(response => response.json())
         .then(data => {
             console.log(data.imdbID);
-            let contenedor = document.getElementById("contenedor");
-            let miDiv = document.createElement("div");
+            let contenedor = document.getElementById("detalles");
+            let contenido = document.getElementById("contenidoDetalles");
+            contenido.innerHTML = '<span id="cerrar"></span>'
+            let botonCerrar = document.getElementById("cerrar");
             let imagen = document.createElement("img");
             let titulo = document.createElement("h2");
             let plot = document.createElement("p");
             let fecha = document.createElement("p");
+            let director = document.createElement("p");
+            let actores = document.createElement("p");
+            let boton = document.createElement("button");
 
             imagen.src = data.Poster;
-            fecha.innerHTML = "Release date: "+data.Released;
-            plot.innerHTML = data.Plot;
+            fecha.innerHTML = "Fecha de estreno: "+data.Released;
+            plot.innerHTML = "Sinopsis: "+data.Plot;
             titulo.innerHTML = data.Title;
+            director.innerHTML = "Director: "+data.Director;
+            actores.innerHTML = "Actores: "+data.Actors;
 
-            miDiv.appendChild(imagen);
-            miDiv.appendChild(titulo);
-            miDiv.appendChild(fecha);
-            miDiv.appendChild(plot);
+            contenido.appendChild(boton);
+            contenido.appendChild(imagen);
+            contenido.appendChild(titulo);
+            contenido.appendChild(director);
+            contenido.appendChild(actores);
+            contenido.appendChild(fecha);
 
-            contenedor.appendChild(miDiv);
-            miDiv.style.border = "solid black 1px"
-            miDiv.style.display = "grid";
-            miDiv.style.placeItems = "center";
-            miDiv.style.margin = 0;
-            miDiv.style.minHeight = "100vh";
+            contenido.appendChild(plot);
 
+            contenedor.appendChild(contenido);
+
+            contenedor.style.display = "grid";
+            
+
+             document.getElementById("cerrar").onclick = () => {
+                contenedor.style.display = "none";
+            };
+
+            contenedor.onclick = (e) => {
+                if (e.target === contenedor)
+                    contenedor.style.display = "none";
+            };
         })
 }
 
@@ -80,7 +97,6 @@ window.onload = () => {
     buscador = document.getElementById("buscador");
     let buscar = document.getElementById("busca");
     tipo = document.getElementById("tipo");
-    //detallesPeticion("tt0076759")
 
     acceso.addEventListener("click",()=>{
         landing.style.display = "none";

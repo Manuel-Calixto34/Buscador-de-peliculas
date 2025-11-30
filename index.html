@@ -4,61 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <script src="index.js"></script>
-    <style>
-        *{
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body{
-            background-image: url(https://cdn.magicdecor.in/com/2023/02/29184224/image-1689504354-3016.jpg);
-            width: 100%;
-            color: white;
-        }
-
-        
-
-        h2{
-            color: white;
-        }
-
-        button{
-            background-color: purple;
-            color: aqua;
-        }
-
-        #btnCargar{
-            opacity: 0;
-        }
-
-        #box{
-            visibility: hidden;
-        }
-
-        #landing{
-            background-image: url(https://cdn.magicdecor.in/com/2023/02/29184224/image-1689504354-3016.jpg);
-        }
-
-        #contenedor{
-            display: grid;
-            grid-template-columns: 80vh 80vh 80vh; 
-        }
-
-        #fondo{
-            z-index: -1;
-            width: 100%;
-            position: fixed;
-            height: 100%;
-        }
-
-        img{
-            width: 200px;
-            height: 200px;
-        }
-        
-    </style>
+    <script src="src/js/index.js"></script>
+    <link rel="stylesheet" href="src/css/styles.css">
 </head>
 <body>
     <div id="landing">
@@ -77,6 +24,11 @@
             <option value="cualquiera">Cualquiera</option>
         </select>
         <div id="contenedor"></div>
+    </div>
+    <div id="detalles">
+        <div id="contenidoDetalles">
+            <button id="cerrar">X</button>
+        </div>
     </div>
 </body>
 </html>
