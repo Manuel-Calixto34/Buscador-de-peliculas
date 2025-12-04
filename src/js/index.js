@@ -136,19 +136,19 @@ window.onload = () => {
     buscador.addEventListener("keyup",()=>{
         let texto = buscador.value.trim();
         if(texto.length<3){
+            contenedor.innerHTML = "";  
+        }else{
             contenedor.innerHTML = "";
-            return;
+            ultimaBusqueda = texto;
+            if(tipo.value=="cualquiera"){
+                tipoBusqueda = "";
+            }else if(tipo.value == "peliculas"){
+                tipoBusqueda = "&type=movie";
+            }else if(tipo.value == "series"){
+                tipoBusqueda = "&type=series";
+            }
+            let url = "https://www.omdbapi.com/?s="+ultimaBusqueda+tipoBusqueda+"&apikey=ea005db6&page=1";
+            lanzarPeticion(url);
         }
-        contenedor.innerHTML = "";
-        ultimaBusqueda = texto;
-        if(tipo.value=="cualquiera"){
-            tipoBusqueda = "";
-        }else if(tipo.value == "peliculas"){
-            tipoBusqueda = "&type=movie";
-        }else if(tipo.value == "series"){
-            tipoBusqueda = "&type=series";
-        }
-        let url = "https://www.omdbapi.com/?s="+ultimaBusqueda+tipoBusqueda+"&apikey=ea005db6&page=1";
-        lanzarPeticion(url);
-        }
+    }
     )}
