@@ -21,10 +21,6 @@ button,input,select{
     color: aqua;
 }
 
-#btnCargar{
-    opacity: 0;
-}
-
 #box{
     visibility: hidden;
     align-self: center;
@@ -40,7 +36,7 @@ button,input,select{
     height: 100vh;
     justify-content: center;
     align-items: center;
-
+    font-size: xx-large;
 }
 
 #contenedor{
