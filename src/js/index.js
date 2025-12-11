@@ -3,6 +3,8 @@ let buscador;
 let contadorPaginas = 2;
 let ultimaBusqueda;
 let tipoBusqueda;
+peliculas_fav = [];
+miStorage = window.localStorage;
 
 function maquetarPeliculas(contenedor,listaPeliculas){
     for(const peli of listaPeliculas){
@@ -19,10 +21,16 @@ function maquetarPeliculas(contenedor,listaPeliculas){
     }
 }
 
+function maquetarFavoritas(peliculas_fav){
+    for(pelicula of peliculas_fav){
+        let url = "https://www.omdbapi.com/?s="+pelicula+"&apikey=ea005db6";
+        lanzarPeticion(url);
+    }
+}
+
 function detallesPeticion(id){
     fetch("https://www.omdbapi.com/?i="+id+"&apikey=ea005db6").then(response => response.json())
         .then(data => {
-            console.log(data.imdbID);
             let contenedor = document.getElementById("detalles");
             let contenido = document.getElementById("contenidoDetalles");
             contenido.innerHTML = '<span id="cerrar"><button id="cerrar">X</button></span>'
@@ -54,12 +62,28 @@ function detallesPeticion(id){
 
             contenedor.appendChild(contenido);
 
+            click = false;
             estrella.addEventListener("click",(e)=>{
-                if(e.target.src = "./src/img/estrellanofav.png"){
-                    estrella.src = "./src/img/pngegg.png";
-                }else if(e.target.src = "./src/img/pngegg.png")
-                    estrella.src="./src/img/estrellanofav.png";
-            })
+                if(click){
+                    click = false;
+                    e.target.src = "./src/img/estrellanofav.png";
+                    peliculas_fav.splice(peliculas_fav.indexOf(data.imdbID,1));
+                }else if(!click){
+                    click = true;
+                    e.target.src = "./src/img/pngegg.png";
+                    peliculas_fav.push(data.imdbID);
+                    miStorage.setItem("peliculasfavs",JSON.stringify(peliculas_fav));
+                }
+
+            });
+
+            /*peliculas_fav = JSON.parse(miStorage.getItem("peliculasfavs"));
+
+            if(peliculas_fav.includes(data.imdbID)){
+                estrella.src = "./src/img/pngegg.png";
+            }else
+                estrella.src = "./src/img/estrellanofav.png";*/
+
 
             contenedor.style.display = "grid";
             
@@ -97,6 +121,7 @@ function lanzarPeticion(url){
 }}
 
 window.onload = () => {
+    
     peticion = false;
     let landing = document.getElementById("landing");
     let caja = document.getElementById("box");
@@ -105,7 +130,8 @@ window.onload = () => {
     buscador = document.getElementById("buscador");
     let buscar = document.getElementById("busca");
     tipo = document.getElementById("tipo");
-    let temporizador;
+    boton_fav = document.getElementById("fav");
+
 
     acceso.addEventListener("click",()=>{
         landing.style.display = "none";
@@ -131,6 +157,10 @@ window.onload = () => {
         
     })
 
+    boton_fav.addEventListener("click",()=>{
+        maquetarFavoritas(peliculas_fav);
+    })
+
 
     
     buscador.addEventListener("keyup",()=>{
@@ -151,4 +181,5 @@ window.onload = () => {
             lanzarPeticion(url);
         }
     }
-    )}
+    )
+}
