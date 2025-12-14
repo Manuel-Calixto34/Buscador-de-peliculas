@@ -3,7 +3,7 @@ let buscador;
 let contadorPaginas = 2;
 let ultimaBusqueda;
 let tipoBusqueda;
-peliculas_fav = [];
+let peliculas_fav = JSON.parse(localStorage.getItem("peliculasfavs")) || [];
 miStorage = window.localStorage;
 
 function maquetarPeliculas(contenedor,listaPeliculas){
@@ -21,19 +21,27 @@ function maquetarPeliculas(contenedor,listaPeliculas){
     }
 }
 
-function maquetarFavoritas(peliculas_fav){
-    for(pelicula of peliculas_fav){
-        let url = "https://www.omdbapi.com/?s="+pelicula+"&apikey=ea005db6";
-        lanzarPeticion(url);
+function maquetarFavoritas(contenedor, peliculas_fav) {
+    if (!peliculas_fav || peliculas_fav.length === 0) {
+        contenedor.innerHTML = "<h2>No hay películas favoritas</h2>";
+    }else{
+        for (let id of peliculas_fav) {
+            fetch("https://www.omdbapi.com/?i=" + id + "&apikey=ea005db6")
+                .then(response => response.json())
+                .then(data => {
+                    maquetarPeliculas(contenedor, [data]);
+                });
+        }
     }
 }
+
 
 function detallesPeticion(id){
     fetch("https://www.omdbapi.com/?i="+id+"&apikey=ea005db6").then(response => response.json())
         .then(data => {
             let contenedor = document.getElementById("detalles");
             let contenido = document.getElementById("contenidoDetalles");
-            contenido.innerHTML = '<span id="cerrar"><button id="cerrar">X</button></span>'
+            contenido.innerHTML = '<button id="cerrar">X</button>'
             let botonCerrar = document.getElementById("cerrar");
             let imagen = document.createElement("img");
             let titulo = document.createElement("h2");
@@ -62,28 +70,25 @@ function detallesPeticion(id){
 
             contenedor.appendChild(contenido);
 
-            click = false;
-            estrella.addEventListener("click",(e)=>{
-                if(click){
-                    click = false;
-                    e.target.src = "./src/img/estrellanofav.png";
-                    peliculas_fav.splice(peliculas_fav.indexOf(data.imdbID,1));
-                }else if(!click){
-                    click = true;
-                    e.target.src = "./src/img/pngegg.png";
+            let esFavorita = peliculas_fav.includes(data.imdbID);
+
+            estrella.src = esFavorita
+                ? "./src/img/pngegg.png"
+                : "./src/img/estrellanofav.png";
+
+            estrella.addEventListener("click", () => {
+                let index = peliculas_fav.indexOf(data.imdbID);
+
+                if (index === -1) {
                     peliculas_fav.push(data.imdbID);
-                    miStorage.setItem("peliculasfavs",JSON.stringify(peliculas_fav));
+                    estrella.src = "./src/img/pngegg.png";
+                } else {
+                    peliculas_fav.splice(index, 1);
+                    estrella.src = "./src/img/estrellanofav.png";
                 }
 
+                miStorage.setItem("peliculasfavs", JSON.stringify(peliculas_fav));
             });
-
-            /*peliculas_fav = JSON.parse(miStorage.getItem("peliculasfavs"));
-
-            if(peliculas_fav.includes(data.imdbID)){
-                estrella.src = "./src/img/pngegg.png";
-            }else
-                estrella.src = "./src/img/estrellanofav.png";*/
-
 
             contenedor.style.display = "grid";
             
@@ -158,7 +163,8 @@ window.onload = () => {
     })
 
     boton_fav.addEventListener("click",()=>{
-        maquetarFavoritas(peliculas_fav);
+        contenedor.innerHTML = "";
+        maquetarFavoritas(contenedor,peliculas_fav);
     })
 
 
